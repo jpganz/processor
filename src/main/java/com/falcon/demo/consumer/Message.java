@@ -9,18 +9,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
+import java.io.Serializable;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "message")
 @Repository
-public class Message {
+public class Message implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;
 
-    @Id
     @Column(name = "message", nullable = false)
     private String message;
 

@@ -4,6 +4,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.core.Binding;
@@ -15,11 +16,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackageClasses = {ConsumerRepository.class})
 public class ConsumerConf {
 
-    static final String topicExchangeName = "falcon-exchange";
+    @Value("${rabbitmq.topicexchange.name}")
+    private String topicExchangeName;
 
-    static final String queueName = "messages";
+    @Value("${rabbitmq.consumerqueue.name}")
+    private String queueName;
 
-    static final String routing_key = "my.key";
+    @Value("${rabbitmq.queuerouting.key}")
+    private String routingKey;
 
     @Bean
     Queue queue() {
@@ -33,7 +37,7 @@ public class ConsumerConf {
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routing_key+".#");
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey+".#");
     }
 
     @Bean
