@@ -17,18 +17,19 @@ public class RecipientController {
 
     final RabbitTemplate rabbitTemplate;
     final String topicExchangeName;
-    static final String routing_key = "my.key";
+    final String routingKey;
 
-    public RecipientController(final RabbitTemplate rabbitTemplate, final String topicExchangeName) {
+    public RecipientController(final RabbitTemplate rabbitTemplate, final String topicExchangeName, final String routingKey) {
         this.rabbitTemplate = rabbitTemplate;
         this.topicExchangeName = topicExchangeName;
+        this.routingKey = routingKey;
     }
 
     @ApiOperation("Save new entry")
     @PostMapping
     //@PreAuthorize("#oauth2.hasScope('NEED TO DEFINE THIS'")
     public ResponseEntity<String> findByAlertId(final String input) {
-        rabbitTemplate.convertAndSend(topicExchangeName, routing_key +".baz", input);
+        rabbitTemplate.convertAndSend(topicExchangeName, routingKey +".baz", input);
         return new ResponseEntity<String>(input, OK);
     }
 
