@@ -1,36 +1,32 @@
 package com.falcon.demo.consumer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.stereotype.Repository;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
-import javax.persistence.Id;
+
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
+import java.time.Instant;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity
-@Table(name = "message")
-@Repository
+//@Repository
 public class Message implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private long id;
+    //@GeneratedValue(strategy = IDENTITY)
+    //@Id
+    //private long id;
 
-    @Column(name = "message", nullable = false)
+    //@Column(name = "message", nullable = false)
     private String message;
 
-    public long getId() {
-        return id;
+    private Instant created;
+
+    public Message(){
+        //requiere by jpa
     }
 
-    public void setId(final long id) {
-        this.id = id;
+    public Message(final String message, final Instant created) {
+        this.message = message;
+        this.created = created;
     }
 
     public String getMessage() {
@@ -41,11 +37,11 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public Message(){
-        //requiere by jpa
+    public Instant getCreated() {
+        return created;
     }
 
-    public Message(final String message) {
-        this.message = message;
+    public void setCreated(final Instant created) {
+        this.created = created;
     }
 }

@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = {ConsumerRepository.class})
+//@EnableJpaRepositories(basePackageClasses = {ConsumerRepository.class})
 public class ConsumerConf {
 
     @Value("${rabbitmq.topicexchange.name}")

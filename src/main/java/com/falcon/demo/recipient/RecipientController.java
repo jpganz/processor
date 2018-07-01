@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
+import java.time.Instant;
+
 import static org.springframework.http.HttpStatus.OK;
 
 @Api("System messages transporter")
@@ -47,7 +49,7 @@ public class RecipientController {
     public ResponseEntity<String> saveNewMessage(final String input) {
         rabbitTemplate.convertAndSend(topicExchangeName, routingKey +".baz", input);
         try {
-            detachedMessage(new Message(input));
+            detachedMessage(new Message(input, Instant.now()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +79,7 @@ public class RecipientController {
         System.out.println("emisor called");
         //Thread.sleep(1000); // simulated delay
         detachedMessage(message);
-        return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!");
+        return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!", Instant.now());
     }
 
 
