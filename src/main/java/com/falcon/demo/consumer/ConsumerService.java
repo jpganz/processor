@@ -3,6 +3,8 @@ package com.falcon.demo.consumer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
 public class ConsumerService {
 
@@ -16,9 +18,11 @@ public class ConsumerService {
     @Transactional
     public void receiveMessage(String message) {
         System.out.println("Received <" + message + ">");
-        //save message to mongo
-        final Message newMessage = new Message();
-        newMessage.setMessage(message);
+        final Message newMessage = new Message(message);
         consumerRepository.save(newMessage);
+    }
+
+    public List<Message> getAllMessages(){
+        return consumerRepository.findAll();
     }
 }

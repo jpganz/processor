@@ -15,7 +15,11 @@ public class RecipientConf {
     //private static final String TOPIC_EXCHANGE_NAME = "falcon-exchange";
 
     @Bean
-    public RecipientController recipientController(final RabbitTemplate rabbitTemplate){
-        return new RecipientController(rabbitTemplate, topicExchangeName, routingKey);
+    public RecipientService recipientService(){
+        return new RecipientService();
+    }
+    @Bean
+    public RecipientController recipientController(final RabbitTemplate rabbitTemplate, final RecipientService recipientService){
+        return new RecipientController(rabbitTemplate, topicExchangeName, routingKey, recipientService);
     }
 }

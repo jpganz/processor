@@ -41,5 +41,11 @@ public class Message implements Serializable {
         this.message = message;
     }
 
+    public Message(){
+        //requiere by jpa
+    }
 
+    public Message(final String message) {
+        this.message = message;
+    }
 }
