@@ -23,6 +23,7 @@
 hs_err_pid*
 
 /target
+/processor-ol/target
 .idea
 demo.iml
 mvnw.cmd

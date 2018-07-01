@@ -7,6 +7,7 @@ import com.falcon.demo.consumer.ConsumerConf;
 import com.falcon.demo.recipient.RecipientConf;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-
+//@EnableDiscoveryClient
 @Import( {
                  DataConfig.class,
                  //SwaggerConfig.class,
