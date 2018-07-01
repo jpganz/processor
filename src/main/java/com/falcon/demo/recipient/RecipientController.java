@@ -4,9 +4,11 @@ import com.falcon.demo.consumer.Message;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +27,18 @@ public class RecipientController {
     final String topicExchangeName;
     final String routingKey;
     final RecipientService recipientService;
+    final SimpMessagingTemplate simpMessagingTemplate;
 
-    public RecipientController(final RabbitTemplate rabbitTemplate, final String topicExchangeName, final String routingKey, final RecipientService recipientService) {
+    public RecipientController(final RabbitTemplate rabbitTemplate,
+                               final String topicExchangeName,
+                               final String routingKey,
+                               final RecipientService recipientService,
+                               final SimpMessagingTemplate simpMessagingTemplate) {
         this.rabbitTemplate = rabbitTemplate;
         this.topicExchangeName = topicExchangeName;
         this.routingKey = routingKey;
         this.recipientService = recipientService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @ApiOperation("Save new entry")
@@ -39,7 +47,7 @@ public class RecipientController {
     public ResponseEntity<String> saveNewMessage(final String input) {
         rabbitTemplate.convertAndSend(topicExchangeName, routingKey +".baz", input);
         try {
-            messageEmitor(new Message(input));
+            detachedMessage(new Message(input));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,16 +59,24 @@ public class RecipientController {
     //@PreAuthorize("#oauth2.hasScope('NEED TO DEFINE THIS'")
     public ResponseEntity<String> getAllMessages() {
         //move it to a ms call
-
         return null;
     }
 
-    //create a rabbit listener here xD
 
+
+    public void detachedMessage(Message message) throws Exception {
+        System.out.println("emisor called");
+        simpMessagingTemplate.convertAndSend("/topic/msg-entries", message);
+    }
+
+
+    // FOR TESTING ONLY
     @MessageMapping("/msg")
-    @SendTo("/topic/msg-entries")
+    //@SendTo("/topic/msg-entries")
     public Message messageEmitor(Message message) throws Exception {
+        System.out.println("emisor called");
         //Thread.sleep(1000); // simulated delay
+        detachedMessage(message);
         return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!");
     }
 
