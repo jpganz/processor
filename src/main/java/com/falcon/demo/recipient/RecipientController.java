@@ -56,22 +56,6 @@ public class RecipientController {
         return new ResponseEntity<String>(input, OK);
     }
 
-    @ApiOperation("Get all stored messages")
-    @GetMapping
-    //@PreAuthorize("#oauth2.hasScope('NEED TO DEFINE THIS'")
-    public ResponseEntity<String> getAllMessages() {
-        //move it to a ms call
-        return null;
-    }
-
-
-
-    public void detachedMessage(Message message) throws Exception {
-        System.out.println("emisor called");
-        simpMessagingTemplate.convertAndSend("/topic/msg-entries", message);
-    }
-
-
     // FOR TESTING ONLY
     @MessageMapping("/msg")
     //@SendTo("/topic/msg-entries")
@@ -82,5 +66,8 @@ public class RecipientController {
         return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!", Instant.now());
     }
 
+    private void detachedMessage(Message message) throws Exception {
+        simpMessagingTemplate.convertAndSend("/topic/msg-entries", message);
+    }
 
 }

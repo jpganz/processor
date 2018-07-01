@@ -15,6 +15,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.or;
+import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
@@ -31,13 +35,14 @@ public class SwaggerConfig {
     }
 
     private Predicate<String> paths() {
-        return equalTo("/v1/entry");
+        return and(
+                or(regex("/v1.*")));
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .description("Microservice to collect info.")
-                .title("Collecter")
+                .title("Processor")
                 .version("1.0")
                 .contact(new Contact("juan", "some url", "jpganz18@gmail.com"))
                 .build();

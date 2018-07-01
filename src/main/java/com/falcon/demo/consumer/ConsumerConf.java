@@ -58,4 +58,9 @@ public class ConsumerConf {
     ConsumerService consumerService(ConsumerRepository consumerRepository){
         return new ConsumerService(consumerRepository);
     }
+
+    @Bean
+    ConsumerController consumerController(ConsumerRepository consumerRepository){
+        return new ConsumerController(consumerRepository);
+    }
 }
