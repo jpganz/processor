@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
 @Import( {
                  DataConfig.class,
                  //SwaggerConfig.class,
