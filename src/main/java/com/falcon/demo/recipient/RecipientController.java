@@ -61,9 +61,8 @@ public class RecipientController {
     //@SendTo("/topic/msg-entries")
     public Message messageEmitor(Message message) throws Exception {
         System.out.println("emisor called");
-        //Thread.sleep(1000); // simulated delay
         detachedMessage(message);
-        return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!", Instant.now());
+        return new Message("Message, " + HtmlUtils.htmlEscape(message.getMessage()), Instant.now());
     }
 
     private void detachedMessage(Message message) throws Exception {
