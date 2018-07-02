@@ -21,6 +21,8 @@ function connect() {
         stompClient.subscribe('/topic/msg-entries', function (message) {
             showMessages(JSON.parse(message.body).message);
         });
+    }, function (message) {
+        connect();
     });
 }
 
