@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @SpringBootApplication
 @EnableZuulProxy
 @EnableDiscoveryClient
-public class FalconOlApplication {
+public class FalconZuulApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(FalconOlApplication.class, args);
+        SpringApplication.run(FalconZuulApplication.class, args);
     }
 }

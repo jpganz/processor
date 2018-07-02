@@ -24,6 +24,7 @@ hs_err_pid*
 
 /target
 /processor-ol/target
+/zuul/target
 .idea
 demo.iml
 mvnw.cmd
