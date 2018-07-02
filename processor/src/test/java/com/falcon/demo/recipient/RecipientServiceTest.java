@@ -1,5 +1,4 @@
 package com.falcon.demo.recipient;
 
-public class RecipientService {
-
+public class RecipientServiceTest {
 }

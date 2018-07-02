@@ -2,7 +2,6 @@ package com.falcon.demo.consumer;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -26,14 +25,13 @@ public class ConsumerService {
     }
 
     public void receiveMessage(String message) {
-        System.out.println("Received <" + message + ">");
         final Message newMessage = new Message(message, Instant.now());
         consumerRepository.save(newMessage);
+        //send message back to rabbit to communicate to all websocket consumers
         rabbitTemplate.convertAndSend(topicExchangeName, routingKey, newMessage);
-        //send message back to rabbit =)
     }
 
-    public List<Message> getAllMessages(){
+    List<Message> getAllMessages() {
         return consumerRepository.findAll();
     }
 }

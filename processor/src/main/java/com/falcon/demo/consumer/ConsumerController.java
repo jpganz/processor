@@ -9,25 +9,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Api("Consumer messaging layer - persistent")
 @RestController
 @RequestMapping(path = "/v1/consumer")
 public class ConsumerController {
 
-    final ConsumerRepository consumerRepository;
+    final ConsumerService consumerService;
 
-    public ConsumerController(final ConsumerRepository consumerRepository) {
-        this.consumerRepository = consumerRepository;
+    public ConsumerController(final ConsumerService consumerService) {
+        this.consumerService = consumerService;
     }
 
-    @ApiOperation("Get all entries")
+    @ApiOperation("Get all messages")
     @GetMapping
     public ResponseEntity<List<Message>> getAllMessages() {
-        final List<Message> messages = consumerRepository.findAll();
-        return new ResponseEntity<>(messages, OK);
+        try {
+            final List<Message> messages = consumerService.getAllMessages();
+            return new ResponseEntity<>(messages, CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity("We could not process your message, please try again.", SERVICE_UNAVAILABLE);
+        }
     }
-
 
 }

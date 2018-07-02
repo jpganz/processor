@@ -1,26 +1,16 @@
 package com.falcon.demo.consumer;
 
-
-
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 import java.time.Instant;
 
-
-//@Repository
 public class Message implements Serializable {
 
-    //@GeneratedValue(strategy = IDENTITY)
-    //@Id
-    //private long id;
 
-    //@Column(name = "message", nullable = false)
     private String message;
 
     private Instant created;
 
-    public Message(){
+    public Message() {
         //requiere by jpa
     }
 

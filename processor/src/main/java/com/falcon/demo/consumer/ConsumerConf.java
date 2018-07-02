@@ -1,6 +1,5 @@
 package com.falcon.demo.consumer;
 
-import com.falcon.demo.configs.GeneralQueueConfig;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -59,7 +58,7 @@ public class ConsumerConf {
 
 
     @Bean
-    ConsumerController consumerController(ConsumerRepository consumerRepository){
-        return new ConsumerController(consumerRepository);
+    ConsumerController consumerController(final ConsumerService consumerService){
+        return new ConsumerController(consumerService);
     }
 }

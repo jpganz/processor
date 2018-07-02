@@ -44,7 +44,7 @@ public class SwaggerConfig {
                 .description("Microservice to collect info.")
                 .title("Processor")
                 .version("1.0")
-                .contact(new Contact("juan", "some url", "jpganz18@gmail.com"))
+                .contact(new Contact("juan", "https://github.com/jpganz", "jpganz18@gmail.com"))
                 .build();
     }
 

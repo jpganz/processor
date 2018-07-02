@@ -23,7 +23,9 @@ import reactor.core.publisher.Flux;
 
 import java.time.Instant;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Api("System messages transporter")
 @RestController
@@ -33,45 +35,42 @@ public class RecipientController {
     final RabbitTemplate rabbitTemplate;
     final String topicExchangeName;
     final String routingKey;
-    final RecipientService recipientService;
     final SimpMessagingTemplate simpMessagingTemplate;
 
     public RecipientController(final RabbitTemplate rabbitTemplate,
                                final String topicExchangeName,
                                final String routingKey,
-                               final RecipientService recipientService,
                                final SimpMessagingTemplate simpMessagingTemplate) {
         this.rabbitTemplate = rabbitTemplate;
         this.topicExchangeName = topicExchangeName;
         this.routingKey = routingKey;
-        this.recipientService = recipientService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @ApiOperation("Save new entry")
     @PostMapping
-    //@PreAuthorize("#oauth2.hasScope('NEED TO DEFINE THIS'")
+    //@PreAuthorize("#oauth2.hasScope todo: add security
     public ResponseEntity<String> saveNewMessage(@RequestBody final String input) {
-        rabbitTemplate.convertAndSend(topicExchangeName, routingKey, input);
         try {
-            //detachedMessage(new Message(input, Instant.now()));
+            rabbitTemplate.convertAndSend(topicExchangeName, routingKey, input);
+            return new ResponseEntity<>(input, ACCEPTED);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity("We could not process your message, please try again.", SERVICE_UNAVAILABLE);
         }
-        return new ResponseEntity<String>(input, OK);
     }
 
-    // FOR TESTING ONLY
+
+    /*
+
+
     @MessageMapping("/msg")
-    //@SendTo("/topic/msg-entries")
     public Message messageEmitor(Message message) throws Exception {
-        System.out.println("emisor called");
         detachedMessage(message);
         return new Message("Message, " + HtmlUtils.htmlEscape(message.getMessage()), Instant.now());
     }
+    */
 
     public void savedMessage(Message message) {
-        System.out.println("I just got a saved message here! yeah! :D" + message);
         try {
             detachedMessage(message);
         } catch (Exception e) {
