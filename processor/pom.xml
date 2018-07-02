@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.falcon</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>processor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -150,6 +150,26 @@
 					</buildArgs>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>com.coderplus.maven.plugins</groupId>
+				<artifactId>copy-rename-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>copy-file</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<sourceFile>${project.build.directory}/${project.name}-${project.version}.jar</sourceFile>
+							<destinationFile>${project.build.directory}/${project.artifactId}.jar</destinationFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
