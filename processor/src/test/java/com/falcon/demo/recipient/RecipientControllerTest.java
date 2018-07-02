@@ -14,13 +14,10 @@ import java.time.Instant;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpStatus.ACCEPTED;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 public class RecipientControllerTest {
     private static final String ERROR_MESSAGE = "We could not process your message, please try again.";
@@ -46,15 +43,6 @@ public class RecipientControllerTest {
         verify(rabbitTemplate, times(1)).convertAndSend(TOPIC_EXCHNAGE, ROUTING_KEY, message);
         assertThat(responseEntity.getStatusCode(), is(ACCEPTED));
     }
-
-    /*
-    @Test
-    public void testSaveNewMessage_WhenException() {
-        final String message = "hello world";
-        doThrow(new Exception()).when(rabbitTemplate).convertAndSend(null, ROUTING_KEY, message);
-        final ResponseEntity<String> responseEntity = recipientController.saveNewMessage(message);
-        assertThat(responseEntity.getStatusCode(), is(SERVICE_UNAVAILABLE));
-    }*/
 
     @Test
     public void testSavedMessage() {
