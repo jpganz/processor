@@ -23,7 +23,9 @@
 hs_err_pid*
 
 /target
-/processor-ol/target
+/processor/target
+/eureka/target
+/zuul/target
 
 .idea
 demo.iml

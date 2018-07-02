@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+
+  mongo:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    container_name: rabbit-mq
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: juan
+      RABBITMQ_DEFAULT_PASS: juan123
+
+  eureka:
+    container_name: eureka
+    build:
+     context: .
+     dockerfile: ./eureka/docker/Dockerfile
+    ports:
+      - "8761:8761"
+
+  processor:
+    container_name: processor
+    build:
+     context: .
+     dockerfile: ./processor/docker/Dockerfile
+    depends_on:
+      - mongo
+      - rabbitmq
+      - eureka
+    external_links:
+      - mongo:mongo
+      - rabbitmq:rabbitmq
+      - eureka:eureka
+
+  zuul:
+    container_name: zuul
+    build:
+     context: .
+     dockerfile: ./zuul/docker/Dockerfile
+    depends_on:
+      - eureka
+    ports:
+      - "8762:8762"
