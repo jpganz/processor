@@ -1,6 +1,7 @@
 package com.falcon.demo;
 
 import com.falcon.demo.configs.DataConfig;
+import com.falcon.demo.configs.GeneralQueueConfig;
 import com.falcon.demo.configs.SwaggerConfig;
 import com.falcon.demo.configs.WebSocketConf;
 import com.falcon.demo.consumer.ConsumerConf;
@@ -23,7 +24,8 @@ import org.springframework.context.annotation.Import;
                  ConsumerConf.class,
                  RecipientConf.class,
                  ConsumerConf.class,
-                 WebSocketConf.class
+                 WebSocketConf.class,
+                 GeneralQueueConfig.class
          })
 public class DemoApplication {
 

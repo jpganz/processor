@@ -52,9 +52,9 @@ public class RecipientController {
     @PostMapping
     //@PreAuthorize("#oauth2.hasScope('NEED TO DEFINE THIS'")
     public ResponseEntity<String> saveNewMessage(@RequestBody final String input) {
-        rabbitTemplate.convertAndSend(topicExchangeName, routingKey +".baz", input);
+        rabbitTemplate.convertAndSend(topicExchangeName, routingKey, input);
         try {
-            detachedMessage(new Message(input, Instant.now()));
+            //detachedMessage(new Message(input, Instant.now()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,6 +68,15 @@ public class RecipientController {
         System.out.println("emisor called");
         detachedMessage(message);
         return new Message("Message, " + HtmlUtils.htmlEscape(message.getMessage()), Instant.now());
+    }
+
+    public void savedMessage(Message message) {
+        System.out.println("I just got a saved message here! yeah! :D" + message);
+        try {
+            detachedMessage(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void detachedMessage(Message message) throws Exception {

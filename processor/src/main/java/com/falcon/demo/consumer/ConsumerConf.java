@@ -1,5 +1,6 @@
 package com.falcon.demo.consumer;
 
+import com.falcon.demo.configs.GeneralQueueConfig;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -19,14 +20,14 @@ public class ConsumerConf {
     private String topicExchangeName;
 
     @Value("${rabbitmq.consumerqueue.name}")
-    private String queueName;
+    private String consumerQueueName;
 
     @Value("${rabbitmq.queuerouting.key}")
-    private String routingKey;
+    private String consumerRoutingKey;
 
     @Bean
     Queue queue() {
-        return new Queue(queueName, false);
+        return new Queue(consumerQueueName, false);
     }
 
     @Bean
@@ -34,9 +35,10 @@ public class ConsumerConf {
         return new TopicExchange(topicExchangeName);
     }
 
+
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey+".#");
+        return BindingBuilder.bind(queue).to(exchange).with(consumerRoutingKey+".#");
     }
 
     @Bean
@@ -44,7 +46,7 @@ public class ConsumerConf {
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
+        container.setQueueNames(consumerQueueName);
         container.setMessageListener(listenerAdapter);
         return container;
     }
@@ -54,10 +56,7 @@ public class ConsumerConf {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 
-    @Bean
-    ConsumerService consumerService(ConsumerRepository consumerRepository){
-        return new ConsumerService(consumerRepository);
-    }
+
 
     @Bean
     ConsumerController consumerController(ConsumerRepository consumerRepository){
