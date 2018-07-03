@@ -44,14 +44,6 @@ This must return the maven version with a 3.0 or greater
 
 
 ```
-java -version
-```
-
-This must return the java version with a 1.8 or greater
-
-
-
-```
 docker version
 ```
 

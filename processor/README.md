@@ -35,14 +35,6 @@ mvn -v
 This must return the maven version with a 3.0 or greater
 
 
-```
-java -version
-```
-
-This must return the java version with a 1.8 or greater
-
-
-
 
 ## Running the tests
 
@@ -175,3 +167,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * Thanks to the great developers who made all the previously mentioned frameworks available AND open source :)
 
 
+###To Do
+
+Add more integration tests (preferable with wiremock)
+Add oauth server with proper scopes
+Add proper shutdown of app and services

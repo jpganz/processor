@@ -36,7 +36,6 @@ public class RecipientController {
     final RabbitTemplate rabbitTemplate;
     final String topicExchangeName;
     final String routingKey;
-
     final SimpMessagingTemplate simpMessagingTemplate;
 
     public RecipientController(final RabbitTemplate rabbitTemplate,
@@ -53,24 +52,16 @@ public class RecipientController {
     @PostMapping
     @ResponseStatus(ACCEPTED)
     //@PreAuthorize("#oauth2.hasScope todo: add security
-    public String saveNewMessage(@RequestBody final String input) {
-        rabbitTemplate.convertAndSend(topicExchangeName, routingKey, input);
-        return input;
+    public ResponseEntity<String> saveNewMessage(@RequestBody final String input) {
+        try {
+            rabbitTemplate.convertAndSend(topicExchangeName, routingKey, input);
+            return new ResponseEntity<>(input, ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity("We could not process your message, please try again.", SERVICE_UNAVAILABLE);
+        }
     }
-
-
-    /*
-
-
-    @MessageMapping("/msg")
-    public Message messageEmitor(Message message) throws Exception {
-        detachedMessage(message);
-        return new Message("Message, " + HtmlUtils.htmlEscape(message.getMessage()), Instant.now());
-    }
-    */
 
     public void savedMessage(Message message) {
-        System.out.println("I just got a saved message here! yeah! :D" + message);
         try {
             detachedMessage(message);
         } catch (Exception e) {
@@ -81,5 +72,4 @@ public class RecipientController {
     private void detachedMessage(Message message) throws Exception {
         simpMessagingTemplate.convertAndSend("/topic/msg-entries", message);
     }
-
 }

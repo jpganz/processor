@@ -1,3 +1,7 @@
+#Eureka Properties
+
+## Property = Value
+
 server.port=8761
 eureka.client.register-with-eureka=false
 eureka.client.fetch-registry=false
