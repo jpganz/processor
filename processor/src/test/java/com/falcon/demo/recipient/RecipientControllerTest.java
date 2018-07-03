@@ -1,11 +1,8 @@
 package com.falcon.demo.recipient;
 
-import com.falcon.demo.consumer.ConsumerController;
-import com.falcon.demo.consumer.ConsumerService;
 import com.falcon.demo.consumer.Message;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -18,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 public class RecipientControllerTest {
     private static final String ERROR_MESSAGE = "We could not process your message, please try again.";
@@ -37,8 +35,16 @@ public class RecipientControllerTest {
     }
 
     @Test
-    public void testSaveNewMessage_WhenNoException() {
+    public void testSaveNewMessage_WhenNoValidJson() {
         final String message = "hello world";
+        final ResponseEntity<String> responseEntity = recipientController.saveNewMessage(message);
+        verify(rabbitTemplate, times(0)).convertAndSend(TOPIC_EXCHNAGE, ROUTING_KEY, message);
+        assertThat(responseEntity.getStatusCode(), is(UNPROCESSABLE_ENTITY));
+    }
+
+    @Test
+    public void testSaveNewMessage_WhenNoError() {
+        final String message = "{\"key\" : \"value\"}";
         final ResponseEntity<String> responseEntity = recipientController.saveNewMessage(message);
         verify(rabbitTemplate, times(1)).convertAndSend(TOPIC_EXCHNAGE, ROUTING_KEY, message);
         assertThat(responseEntity.getStatusCode(), is(ACCEPTED));
