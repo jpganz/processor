@@ -23,6 +23,11 @@ public class ConsumerController {
         this.consumerService = consumerService;
     }
 
+    /*
+    Controller to return all stored messages
+    @Param : none
+    @Return List of Messages
+     */
     @ApiOperation("Get all messages")
     @GetMapping
     public ResponseEntity<List<Message>> getAllMessages() {

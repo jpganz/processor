@@ -35,7 +35,8 @@ public class DemoApplication {
     static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
-
         SpringApplication.run(DemoApplication.class, args);
     }
+
+
 }
