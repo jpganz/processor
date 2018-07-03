@@ -1,12 +1,19 @@
-# Message processor 
+# Message processor system
 
-This specific module is in charge to handle all the logic and processing for newly created messages.
+This is the message processor system, receives, process and stores messages.
+
+Includes a web socket page that shows inserted messages on real time.
+
+The modules implemented are:
+
+* Processor - Receive, enqueues, process and save messages
+* Zuul - Balancer multiple instances of a same application based on the service discovery's register instances
+* Eureka - Service discovery where new instances register
 
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 
 ### Prerequisites
 
@@ -15,11 +22,12 @@ What things you need to install the software and how to install them
 ```
 Java 8
 Maven 3+
+Docker 16+
 ```
 
 ### Dependencies
 
-Verify Java and Maven are installed. You can do it by running the following commands:
+Verify Java, Maven and Docker are installed. You can do it by running the following commands:
 
 
 ```
@@ -43,12 +51,28 @@ This must return the java version with a 1.8 or greater
 
 
 
+```
+docker version
+```
+
+This must return the docker version with a 16 or greater
+
 
 ## Running the tests
 
 To run manually the test you must:
 
-*Once in the root folder run the following command:
+*Specify the module's root folder
+
+```
+cmd ~/processor/processor
+or
+cmd ~/processor/zuul
+or
+cmd ~/processor/eureka
+```
+
+and run the following command:
 
 ```
 mvn test
@@ -78,30 +102,37 @@ public void testMethodName(){
 
 How to run this system?
 
-Once you are on the folder path run 
+Once you are at the processor root folder then run the following command:
 
 ```
-mvn clean install
+./build.sh
 ```
 
-this will generate a jar file under the /target.
+It will compile the projects, create the docker images and set it at the running docker.
 
-Then run the following:
+## Built With
 
-```
-java -jar processor.jar 
-```
-(or the given jar name)
+* [Spring Boot](https://spring.io/projects/spring-boot/) - The web framework used
+* [Netflix Zuul](https://github.com/Netflix/zuul) - The enrouter/balancer framework
+* [Netflix Eureka](https://github.com/Netflix/eureka) - The service discovery framework
+* [RabbitMQ](https://www.rabbitmq.com/) - The messaging broker
+* [MongoDB](https://www.mongodb.com/) - DBMS - best for json formats
+* [Maven](https://maven.apache.org/) - Project build tool
+* [Docker](https://www.docker.com/) - Containerization tool
 
-This will run the processor on a randomly selected port
+## Docker-compose file
+
+The docker compose file is made in a way where all the common dependencies can be adjusted and configured properly for the desired environment.
+
+It supports multiple instances of the processor module (as many as desired). With no extra configuration other than add the instance on this file, it can run manually as well, will join by default to zuul thanks to eureka discovery platform.
 
 #Endpoints
 
-* [VIA BROWSER]http://localhost:port/index.html 
+* [VIA BROWSER]http://localhost:8762/index.html 
 
 Front end page where a web socket connection is created and is refreshed with ONLY database stored events.
 
-##### [GET]http://localhost:port/v1/consumer 
+##### [GET]http://localhost:8762/v1/consumer 
 
 Returns the list with all the messages previously store with the following format:
 
@@ -121,7 +152,7 @@ Returns the list with all the messages previously store with the following forma
 
 
 
-##### [POST]http://localhost:port/v1/entry 
+##### [POST]http://localhost:8762/v1/entry 
 
 Endpoint to save new messages on a json format.
 
@@ -148,18 +179,6 @@ Expected returned result:
 ## Properties
 
 Check OPS.md file
-
-
-
-## Built With
-
-* [Spring Boot](https://spring.io/projects/spring-boot/) - The web framework used
-* [Netflix Zuul](https://github.com/Netflix/zuul) - The enrouter/balancer framework
-* [Netflix Eureka](https://github.com/Netflix/eureka) - The service discovery framework
-* [RabbitMQ](https://www.rabbitmq.com/) - The messaging broker
-* [MongoDB](https://www.mongodb.com/) - DBMS - best for json formats
-* [Maven](https://maven.apache.org/) - Project build tool
-* [Docker](https://www.docker.com/) - Containerization tool
 
 
 ## Authors

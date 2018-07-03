@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 public class ConsumerControllerTest {
@@ -40,7 +40,7 @@ public class ConsumerControllerTest {
         verify(consumerService, times(1)).getAllMessages();
         assertThat(messages.getBody().size(), is(1));
         assertThat(messages.getBody().get(0).getMessage(), is(message));
-        assertThat(messages.getStatusCode(), is(CREATED));
+        assertThat(messages.getStatusCode(), is(ACCEPTED));
     }
 
     @Test

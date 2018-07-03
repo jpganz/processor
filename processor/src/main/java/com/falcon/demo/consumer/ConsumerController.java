@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Api("Consumer messaging layer - persistent")
@@ -29,7 +28,7 @@ public class ConsumerController {
     public ResponseEntity<List<Message>> getAllMessages() {
         try {
             final List<Message> messages = consumerService.getAllMessages();
-            return new ResponseEntity<>(messages, CREATED);
+            return new ResponseEntity<>(messages, ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity("We could not process your message, please try again.", SERVICE_UNAVAILABLE);
         }
